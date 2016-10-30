@@ -1,5 +1,8 @@
-%h2 Your subscriptions
-= paginate @topics
+.container
+  .row
+    .col-sm-12
+      %h2 Your subscriptions
+      = paginate @topics
 
-- @topics.each do |sub|
-  = render partial: 'topic', :locals => {:topic => sub.subscribable}
+      - @topics.each do |sub|
+        = render partial: 'topic', :locals => {:topic => sub.subscribable}

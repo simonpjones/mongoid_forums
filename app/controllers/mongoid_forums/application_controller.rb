@@ -1,6 +1,7 @@
 require 'cancan'
 
 class MongoidForums::ApplicationController < ApplicationController
+  # layout 'forums'
   helper MongoidForums::Engine.helpers
 
   rescue_from CanCan::AccessDenied do

@@ -8,6 +8,9 @@ module MongoidForums
     end
 
     def authenticate_mongoid_forums_admin
+      logger.info "HERERER"
+      logger.info mongoid_forums_user
+      logger.info mongoid_forums_user.role
       if !mongoid_forums_user || !mongoid_forums_user.mongoid_forums_admin?
         flash.alert = t("mongoid_forums.errors.access_denied")
         redirect_to forums_path #TODO: Redirect to last URL

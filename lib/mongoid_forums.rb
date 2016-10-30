@@ -23,7 +23,7 @@ module MongoidForums
 
         def mongoid_forums_admin?
           mongoid_admin
-        end unless method_defined? :mongoid_forums_admin
+        end unless method_defined? :mongoid_forums_admin?
 
         # Using +to_s+ by default for backwards compatibility
         def forum_display_name
