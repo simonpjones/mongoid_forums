@@ -1,4 +1,21 @@
-= simple_form_for [:admin, @category] do |f|
-  = f.input :name
-  = f.input :position
-  = f.submit "Create Category", :class => "btn", :disable_with => "Creating..."
+.container
+  .row
+    .col-sm-12
+
+      %h3 Message Boards :: Admin
+
+      .message-board
+        %h3
+          = link_to 'Forum Admin', admin_root_url
+          %i.fa.fa-fw.fa-angle-right
+          = link_to 'Categories', admin_categories_url
+          %i.fa.fa-fw.fa-angle-right
+          New Category
+
+        = simple_form_for [:admin, @category], class: 'form' do |f|
+          .form-group
+            = f.input :name, input_html: { class: 'form-control' }
+          .form-group
+            = f.input :position, input_html: { class: 'form-control' }
+          .form-group.align-right
+            = f.submit "Create", class: "btn btn-primary", :disable_with => "Creating..."

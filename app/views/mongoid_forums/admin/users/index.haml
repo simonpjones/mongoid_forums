@@ -1,22 +1,36 @@
-%h3 Listing all admins
-%table{:border => "1"}
-  %tr
-    %th
-      Name
+.container
+  .row
+    .col-sm-12
 
-  - @admins.each do |admin|
-    %tr
-      %td
-        = admin.forum_display_name
-      %td
-        = button_to "Remove", admin_user_remove_admin_path("dummy", user: {id: admin.id}), method: :post, data: { confirm: 'Are you certain you want to delete this?' }
+      %h3 Message Boards :: Admin
 
-= form_tag admin_user_add_admin_path("dummy"), :method => :post, :id => "form_add_user" do
-  %input{:id => "userinput", :list => "users", :name => "[user][id]"}/
-  %datalist#users
-    - @non_admins.each do |user|
-      %option{:id => user.id, :value => user.forum_display_name}
-  = submit_tag("Add Admin")
+      .message-board
+        %h3
+          = link_to 'Forum Admin', admin_root_url
+          %i.fa.fa-fw.fa-angle-right
+          Users
+
+        %table.table
+          %tr
+            %th{ style: 'width: 70%' }
+              Name
+            %th
+
+          - @admins.each do |admin|
+            %tr
+              %td
+                = admin.forum_display_name
+              %td.align-right
+                = link_to admin_user_remove_admin_path("dummy", user: {id: admin.id}), method: :post, class: 'text-danger', data: { confirm: 'Are you certain you want to delete this?' } do
+                  Remove Privelages
+                  %i.fa.fa-fw.fa-trash-o
+
+        = form_tag admin_user_add_admin_path("dummy"), method: :post, id: "form_add_user", class: 'form-inline' do
+          %input{:id => "userinput", list: "users", name: "[user][id]", class: 'form-control'}/
+          %datalist#users
+            - @non_admins.each do |user|
+              %option{id: user.id, value: user.forum_display_name}
+          = submit_tag "Set as Admin", class:'btn btn-success'
 
 :javascript
   $("#form_add_user").submit(function(){

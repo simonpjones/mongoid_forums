@@ -1,26 +1,40 @@
-%h2
-  = @group.name
-%h3 Listing all members
-%table{:border => "1"}
-  %tr
-    %th
-      Name
+.container
+  .row
+    .col-sm-12
 
-  - @group.members.each do |member|
-    %tr
-      %td
-        = MongoidForums.user_class.find(member).forum_display_name
-      %td
-        = button_to "Remove", admin_group_rem_user_path(group_id: @group.id, user: {id: member}), method: :post, data: { confirm: 'Are you certain you want to delete this?' }
+      %h3 Message Boards :: Admin
 
-= form_tag admin_group_add_user_path(@group), :method => :post, :id => "form_add_user" do
-  %input{:id => "userinput", :list => "users", :name => "[user][id]"}/
-  %datalist#users
-    - @users.each do |user|
-      %option{:id => user.id, :value => user.forum_display_name}
-  = submit_tag("Add User")
+      .message-board
+        %h3
+          = link_to 'Forum Admin', admin_root_url
+          %i.fa.fa-fw.fa-angle-right
+          = link_to 'Groups', admin_groups_url
+          %i.fa.fa-fw.fa-angle-right
+          = "#{@group.name} group members"
 
-:javascript
-  $("#form_add_user").submit(function(){
-    $("#userinput").val($('#users').find('option[value="' + $('#userinput').val() + '"]').attr('id'));
-  });
+        %table.table
+          %tr
+            %th
+              Name
+            %th
+
+          - @group.members.each do |member|
+            %tr
+              %td
+                = MongoidForums.user_class.find(member).forum_display_name
+              %td.align-right
+                = link_to admin_group_rem_user_path(group_id: @group.id, user: {id: member}), method: :post, class: 'text-danger', data: { confirm: 'Are you certain you want to delete this?' } do
+                  Remove
+                  %i.fa.fa-fw.fa-trash-o
+
+        = form_tag admin_group_add_user_path(@group), :method => :post, :id => "form_add_user", class: 'form form-inline' do
+          %input{:id => "userinput", :list => "users", :name => "[user][id]", class: 'form-control'}/
+          %datalist#users
+            - @users.each do |user|
+              %option{:id => user.id, :value => user.forum_display_name}
+          = submit_tag "Add User", class: 'btn btn-success'
+
+        :javascript
+          $("#form_add_user").submit(function(){
+            $("#userinput").val($('#users').find('option[value="' + $('#userinput').val() + '"]').attr('id'));
+          });

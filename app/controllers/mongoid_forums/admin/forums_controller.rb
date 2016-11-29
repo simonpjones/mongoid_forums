@@ -72,7 +72,7 @@ module MongoidForums
       private
 
       def forum_params
-        params.require(:forum).permit(:name, :category, :position)
+        params.require(:forum).permit(:name, :category, :position, :description)
       end
 
       def set_forum

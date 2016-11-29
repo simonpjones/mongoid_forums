@@ -1,20 +1,33 @@
 .container
   .row
     .col-sm-12
-      %h1 Edit Post
-      - if @current_resource[:reply_to_id]
-        - replying_to = MongoidForums::Post.find(@current_resource[:reply_to_id])
-        This post is a reply to
-        = replying_to.user.forum_display_name
-        %br
-        >
-        = replying_to.text
-        %br
-        %br
 
-      = form_for ([@current_resource.topic, @current_resource]) do |f|
-        = f.label :text
-        %br
-        = render :partial => "form", :locals => { :f => f }
-        %br
-        = f.submit "Update post", :class => "btn", :disable_with => "Updating..."
+      %h3 Message Boards
+
+      .message-board
+        %h3
+          = link_to @topic.forum.category.name, forums_url
+          %i.fa.fa-fw.fa-angle-right
+          = link_to @topic.forum.name, forum_url(@topic.forum)
+          %i.fa.fa-fw.fa-angle-right
+          = link_to @topic.name, topic_url(@topic)
+          %i.fa.fa-fw.fa-angle-right
+          Edit Post
+
+        %section.forum-boards
+          - if @current_resource[:reply_to_id]
+            - replying_to = MongoidForums::Post.find(@current_resource[:reply_to_id])
+            Replying to
+            %blockquote.mt5
+              %p
+                = replying_to.user.forum_display_name
+                said
+                = time_ago_in_words(replying_to.created_at)
+                ago
+              = mongoid_forums_format(replying_to.text)
+
+          = form_for [@topic, @post], class: 'form' do |f|
+            .form-group
+              = render :partial => "form", :locals => { :f => f }
+            .form-group.align-right
+              = f.submit "Update", :class => "btn btn-primary", :disable_with => "Updating..."

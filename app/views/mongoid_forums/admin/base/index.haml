@@ -1,6 +1,22 @@
-%h1 Admin Dashboard
+.container
+  .row
+    .col-sm-12
 
-=link_to "Manage Categories", admin_categories_path
-=link_to "Manage Forums", admin_forums_path
-=link_to "Manage Groups", admin_groups_path
-=link_to "Manage Users", admin_users_path
+      %h3 Message Boards :: Admin
+
+      .message-board
+        %h3
+          Forum Admin
+
+        = link_to admin_categories_path, class: 'btn btn-primary' do
+          %i.fa.fa-fw.fa-tags
+          Manage Categories
+        = link_to admin_forums_path, class: 'btn btn-primary' do
+          %i.fa.fa-fw.fa-comments-o
+          Manage Forums
+        = link_to admin_groups_path, class: 'btn btn-primary' do
+          %i.fa.fa-fw.fa-users
+          Manage Groups
+        = link_to admin_users_path, class: 'btn btn-primary' do
+          %i.fa.fa-fw.fa-user
+          Manage Users

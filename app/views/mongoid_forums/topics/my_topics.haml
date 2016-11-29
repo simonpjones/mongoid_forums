@@ -1,9 +1,13 @@
 .container
   .row
     .col-sm-12
-      %h2 Your Topics
 
-      = paginate @topics
+      %h3 Message Boards
 
-      - @topics.each do |topic|
-        = render partial: 'topic', :locals => {:topic => topic}
+      .message-board
+        %h2 Your Topics
+
+        = paginate @topics
+
+        - @topics.each do |topic|
+          = render partial: 'topic', :locals => {:topic => topic}

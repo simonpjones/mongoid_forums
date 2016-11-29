@@ -2,6 +2,7 @@ module MongoidForums
   class Forum
     include Mongoid::Document
     include MongoidForums::Concerns::Viewable
+    include SiteScopable
 
     belongs_to :category, :class_name => "MongoidForums::Category"
     validates :category, :presence => true
@@ -12,6 +13,7 @@ module MongoidForums
     field :posts_count, :type => Integer
 
     field :name
+    field :description, type: String, default: ''
 
     has_and_belongs_to_many :moderator_groups, :class_name => "MongoidForums::Group", inverse_of: nil
 

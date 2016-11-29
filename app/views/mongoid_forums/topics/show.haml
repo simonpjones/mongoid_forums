@@ -1,19 +1,39 @@
 .container
   .row
     .col-sm-12
-      %h1 Viewing Topic "#{@topic.emojified_name}"
-      - if mongoid_forums_admin?
-        = link_to t("mongoid_forums.topics.actions.hide.#{@topic.hidden}"), toggle_hide_admin_topic_path(@forum, @topic), :class => "btn"
-        = link_to t("mongoid_forums.topics.actions.lock.#{@topic.locked}"), toggle_lock_admin_topic_path(@forum, @topic), :class => "btn"
-        = link_to t("mongoid_forums.topics.actions.pin.#{@topic.pinned}"), toggle_pin_admin_topic_path(@forum, @topic), :class => "btn"
 
-      - if @topic.can_be_replied_to? && can?(:reply, @topic)
-        = link_to "Reply to topic", new_topic_post_path(@topic)
-      - if mongoid_forums_user && @topic.subscriber?(mongoid_forums_user.id)
-        = link_to "Unsubscribe", unsubscribe_topic_path(@topic)
-      - elsif mongoid_forums_user
-        = link_to "Subscribe", subscribe_topic_path(@topic)
-      %br
-      = paginate @posts
-      %br
-      = render @posts
+      %h3 Message Boards
+
+      .message-board
+        %h3
+          = link_to @topic.forum.category.name, forums_url
+          %i.fa.fa-fw.fa-angle-right
+          = link_to @topic.forum.name, forum_url(@topic.forum)
+
+
+        %section.forum-boards
+          .forum-topic
+            %header
+              %h2
+                = @topic.name
+              %p
+                = "Started #{time_ago_in_words(@topic.created_at)} ago by #{@topic.user.forum_display_name}"
+
+          - if mongoid_forums_admin?
+            = link_to t("mongoid_forums.topics.actions.hide.#{@topic.hidden}"), toggle_hide_admin_topic_path(@forum, @topic), :class => "btn btn-primary"
+            = link_to t("mongoid_forums.topics.actions.lock.#{@topic.locked}"), toggle_lock_admin_topic_path(@forum, @topic), :class => "btn btn-primary"
+            -# = link_to t("mongoid_forums.topics.actions.pin.#{@topic.pinned}"), toggle_pin_admin_topic_path(@forum, @topic), :class => "btn btn-primary"
+
+          - if mongoid_forums_user && @topic.subscriber?(mongoid_forums_user.id)
+            = link_to "Unsubscribe", unsubscribe_topic_path(@topic), class: 'btn btn-warning'
+          - elsif mongoid_forums_user
+            = link_to "Subscribe", subscribe_topic_path(@topic), class: 'btn btn-info'
+          %br
+          = paginate @posts
+          %br
+          = render @posts
+
+          %br
+
+          - if @topic.can_be_replied_to? && can?(:reply, @topic)
+            = link_to "Reply to topic", new_topic_post_path(@topic), class: 'btn btn-primary'

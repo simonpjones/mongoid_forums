@@ -2,7 +2,7 @@ require_dependency "mongoid_forums/application_controller"
 
 module MongoidForums
   class TopicsController < ApplicationController
-    before_filter :find_forum, :except => [:my_subscriptions, :my_posts, :my_topics]
+    before_action :find_forum, :except => [:my_subscriptions, :my_posts, :my_topics]
 
     def show
       if find_topic

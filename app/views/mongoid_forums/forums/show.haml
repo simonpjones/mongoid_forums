@@ -2,50 +2,28 @@
   .row
     .col-sm-12
 
-      %h1 Viewing Forum "#{@forum.name}"
-      - if @forum.moderator?(mongoid_forums_user)
-        %b You are a moderator on this forum.
-      %br
-      %br
-      = link_to "Add a topic", forum_path(@forum) + '/new'
-      %br
-      %h2 Topics:
-      %table{:border => "1"}
-        %tr
-          %th
-            Name
-          %th
-            Creator
-          %th
-            Last post
-          %th
-            Unread posts
-          %th
-            Posts
-          %th
-            Views
-        - @topics.each do |topic|
-          - if can?(:read, topic)
-            %tr
-              %td
-                - if topic.locked
-                  &#128274
-                - if topic.hidden
-                  ⚠
-                - if topic.pinned
-                  *
+      %h3 Message Boards
+
+      .message-board
+        %h3
+          = link_to @forum.category.name, forums_url
+          %i.fa.fa-fw.fa-angle-right
+          = @forum.name
+
+        - if @forum.moderator?(mongoid_forums_user)
+          %b You are a moderator on this forum.
+          %br
+
+
+        %section.forum-boards
+          - @topics.each do |topic|
+            %article.forum-topic
+              %h3
+                .post-count
+                  = topic.posts.count
                 = link_to topic.emojified_name, topic
-              %td
-                = topic.user.forum_display_name
-                = time_ago_in_words( topic.created_at )
-                ago
-              %td
-                = topic.posts.last.user.forum_display_name
-                = time_ago_in_words( topic.posts.last.created_at )
-                ago
-              %td
-                = mongoid_forums_user ? topic.unread_post_count(mongoid_forums_user) : ""
-              %td
-                = topic.posts.count
-              %td
-                = topic.views_count ? topic.views_count : "None"
+                %small
+                  = last_topic_post(topic)
+
+
+        = link_to "Add a topic", forum_path(@forum) + '/new'

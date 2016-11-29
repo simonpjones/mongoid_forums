@@ -2,9 +2,9 @@ require_dependency "mongoid_forums/application_controller"
 
 module MongoidForums
   class PostsController < ApplicationController
-    before_filter :find_topic
-    before_filter :authenticate_mongoid_forums_user, except: :show
-    before_filter :reject_locked_topic!, only: [:new, :create]
+    before_action :find_topic
+    before_action :authenticate_mongoid_forums_user, except: :show
+    before_action :reject_locked_topic!, only: [:new, :create]
 
     def new
       authorize! :reply, @topic
@@ -13,11 +13,11 @@ module MongoidForums
       if params[:reply_to_id]
         find_reply_to_post
 
-        if @reply_to.id && @reply_to.id == @topic.posts.first.id
-          flash[:alert] = t("mongoid_forums.post.not_created_quote_original_post")
-          redirect_to @topic
-          return
-        end
+        # if @reply_to.id && @reply_to.id == @topic.posts.first.id
+        #   flash[:alert] = t("mongoid_forums.post.not_created_quote_original_post")
+        #   redirect_to @topic
+        #   return
+        # end
       end
 
       if @topic.locked

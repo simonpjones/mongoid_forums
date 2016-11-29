@@ -3,7 +3,7 @@ require_dependency "mongoid_forums/application_controller"
 module MongoidForums
   class ForumsController < ApplicationController
     load_and_authorize_resource :class => 'MongoidForums::Forum', :only => :show
-    before_filter :authenticate_mongoid_forums_user, :only => [:create, :new]
+    before_action :authenticate_mongoid_forums_user, :only => [:create, :new]
 
     def index
       @categories = Category.asc(:position)

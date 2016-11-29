@@ -1,21 +1,35 @@
-%h1 Manage categories
+.container
+  .row
+    .col-sm-12
 
-%h2 Create a new category
-= link_to "New category", new_admin_category_path
+      %h3 Message Boards :: Admin
 
-%h2 Listing all categories
-%table{:border => "1"}
-  %tr
-    %th
-      Name
+      .message-board
+        %h3
+          = link_to 'Forum Admin', admin_root_url
+          %i.fa.fa-fw.fa-angle-right
+          Categories
 
-  - @categories.each do |category|
-    %tr
-      %td
-        = link_to category.name, [:admin, category]
-      %td
-        = link_to "Show", admin_category_path(category)
-      %td
-        = link_to "Edit", edit_admin_category_path(category)
-      %td
-        = button_to "Destroy", admin_category_path(category), method: :delete, data: { confirm: 'Are you certain you want to delete this?' }
+          = link_to "New category", new_admin_category_path, class: 'btn btn-primary pull-right'
+
+        %table.table
+          %tr
+            %th{ style: 'width: 70%' }
+              Name
+            %th
+            %th
+
+          - @categories.each do |category|
+            %tr
+              %td
+                = link_to category.name, [:admin, category]
+              %td.align-right
+                = link_to admin_category_path(category), class: 'nudge-left' do
+                  View
+                  %i.fa.fa-fw.fa-eye
+                = link_to edit_admin_category_path(category), class: 'nudge-left' do
+                  Edit
+                  %i.fa.fa-fw.fa-edit
+                = link_to admin_category_path(category), method: :delete, class: 'text-danger', data: { confirm: 'Are you certain you want to delete this?' } do
+                  Delete
+                  %i.fa.fa-fw.fa-trash-o

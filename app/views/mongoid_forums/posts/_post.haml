@@ -1,24 +1,33 @@
-= post.user.forum_display_name
-- if post.reply_to_id
-  replied to
-  = MongoidForums::Post.find(post.reply_to_id).user.forum_display_name
-- else
-  created
-= time_ago_in_words(post.created_at)
-ago
+%article.forum-post
+  %header
+    %h3
+      .post-avatar
+        = post.user.forum_display_name.first.upcase
+        
+      = post.user.forum_display_name
 
-= link_to 'Quote', new_topic_post_path(post.topic_id, :reply_to_id => post.id)
-- if mongoid_forums_user && post.owner_or_admin?(mongoid_forums_user)
-  - if can?(:edit_post, post.topic.forum)
-    = link_to "Edit", edit_topic_post_path(post.topic_id, post)
-  - if can?(:destroy_post, post.topic.forum)
-    = button_to "Delete", topic_post_path(post.topic_id, post), :method => :delete
+      %small
+        = "#{time_ago_in_words(post.created_at)} ago"
+
+  .forum-post-content
+    - if post.reply_to_id
+      = render :partial => 'mongoid_forums/posts/quoted', :locals => {:post => post}
+
+    %p
+      = mongoid_forums_format(post.text)
+
+  = link_to new_topic_post_path(post.topic_id, :reply_to_id => post.id) do
+    %i.fa.fa-fw.fa-quote-left
+    Quote
+  - if mongoid_forums_user && post.owner_or_admin?(mongoid_forums_user)
+    - if can?(:edit_post, post.topic.forum)
+      = link_to edit_topic_post_path(post.topic_id, post) do
+        %i.fa.fa-fw.fa-pencil-square-o
+        Edit
+    - if can?(:destroy_post, post.topic.forum)
+      = link_to topic_post_path(post.topic_id, post), :method => :delete do
+        %i.fa.fa-fw.fa-trash-o
+        Delete
 
 
-%br
-- if post.reply_to_id
-  = render :partial => 'mongoid_forums/posts/quoted', :locals => {:post => post}
-  %br
-= mongoid_forums_format(post.text)
-%br
 %hr

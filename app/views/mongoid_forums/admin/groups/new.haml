@@ -1,5 +1,32 @@
-// create a new mod group OR create a new group
-= simple_form_for [:admin, @group] do |f|
-  = f.input :name
-  = f.input :moderator, as: :radio_buttons
-  = f.submit "Create Group", :class => "btn", :disable_with => "Creating..."
+.container
+  .row
+    .col-sm-12
+
+      %h3 Message Boards :: Admin
+
+      .message-board
+        %h3
+          = link_to 'Forum Admin', admin_root_url
+          %i.fa.fa-fw.fa-angle-right
+          = link_to 'Groups', admin_groups_url
+          %i.fa.fa-fw.fa-angle-right
+          New Group
+
+        // create a new mod group OR create a new group
+        = simple_form_for [:admin, @group], class: 'form' do |f|
+          .form-group
+            = f.input :name, input_html: { class: 'form-control' }
+          .form-group
+            = f.label :moderator
+            %br
+            .btn-group{ data: { toggle: 'buttons' } }
+              = label_tag '', class: "btn btn-primary #{@group.moderator ? 'active' : ''}" do
+                = radio_button_tag 'group[moderator]', true, @group.moderator
+                Yes
+
+              = label_tag '', class: "btn btn-primary #{!@group.moderator ? 'active' : ''}" do
+                = radio_button_tag 'group[moderator]', false, !@group.moderator
+                No
+
+          .form-group.align-right
+            = f.submit "Create Group", :class => "btn btn-primary", :disable_with => "Creating..."
