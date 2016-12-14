@@ -15,15 +15,19 @@
           %br
 
 
-        %section.forum-boards
+        %section.forum-boards.topics
           - @topics.each do |topic|
             %article.forum-topic
               %h3
-                .post-count
-                  = topic.posts.count
+                -# .post-count
+                -#   = topic.posts.count
                 = link_to topic.emojified_name, topic
                 %small
                   = last_topic_post(topic)
 
+                .pull-right
+                  .smaller
+                    = "#{topic.posts.count} posts"
 
-        = link_to "Add a topic", forum_path(@forum) + '/new'
+
+        = link_to "Add a topic", forum_path(@forum) + '/new', class: 'btn btn-success'
